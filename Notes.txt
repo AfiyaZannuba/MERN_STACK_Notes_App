@@ -1,0 +1,150 @@
+-MongoDB is a database where we store the data
+-ExpressJS is a web framework that's ready to use for building web apps faster and easier.
+-NodeJS helps to run JS on server
+-React is a frontend library
+
+Client <-> Server <-> Database Relation:
+
+We send a request eg: delete the note to server. Server delets its from database(mongodb) and send a response from server to client.
+
+API - Application Programming Interface
+API allows 2 different apps talk to each other.
+API helps to protect the database from malicious users. API can block the user too.
+
+
+REST API -> It uses HTTP methods
+GET -> Get some posts on instagram
+POST -> Create a posts
+PUT -> Update a post
+DELETE -> Delete a post
+
+
+Status Codes:
+1xx - Informational
+2xx - Success
+3xx - Redirection
+4xx - Client Errors
+5xx - Server Errors
+
+Every single time once we save or change something in the code we have to run node filename.js or npm run dev on the terminal, to get the changes reflected in the client side.
+That's why we are installing a package called nodemon.We can get the changes without killing the terminal everytime.
+npm install nodemon -D
+
+An endpoint is a combination of a URL + HTTP method that lets the client interact with a specific resource.
+
+/***********************************************/
+Project Stepup - 1:
+Create a server.js file. Create an express app. Using that app we create a server.
+const app = express();
+
+app.listen(5001, () => {
+    console.log("Server started on PORT: 5001")
+});
+
+Then we make REST API using HTTP methods. i.e, the routes.
+So we create seperate folder for routes & Controllers.
+
+Inside Routes -- we create get, create, update, delete routers inside the functions.
+
+Inside server.js -- we use this routes file.
+app.use("/api/notes", routesfile)
+
+Inside routes file we have 
+we create a router from express.
+const router = express.Router();
+router.get("/", getController)
+router.post("/", postController)
+router.put("/:id", updateController)
+router.delete("/:id", deleteController)
+
+Inside Controllers folder file we have
+export function getController(req, res){
+    res.status(200).send("Notes Fetched Successfully)
+}
+.
+.
+.
+
+/***********************************************/
+
+Get started with MongodB
+
+No-SQL Databases examples: MongodB and Cassandra
+MongodB features:-
+1. Flexible Data format (json or key-value pairs). Helps to change data shapes effectively.
+2. Uses Query Language for tasks.
+3. Best for Big Data and Real time apps.
+
+
+Get started with MongoDB atlas: https://www.mongodb.com/lp/cloud/atlas/try5-reg?utm_source=google&utm_campaign=search_gs_pl_evergreen_atlas_core-high-int_prosp-brand_gic-null_apac-in_ps-all_desktop_eng_lead&utm_term=mongodb%20atlas&utm_medium=cpc_paid_search&utm_ad=e&utm_ad_campaign_id=19617021259&adgroup=173739098353&cq_cmp=19617021259&gad_source=1&gad_campaignid=19617021259&gbraid=0AAAAADQ140380jfGvXzAC4_58TXs6ktd7&gclid=CjwKCAjwhuHEBhBHEiwAZrvdcqisi6u2MptPhHo6xVS7TOgaiE7TSeoZrqMkcdPRRUkt-5wkBmaZQxoC2uoQAvD_BwE&WEBXP915=true
+Click on Create Project. Name the Project. Click Next.
+Create Cluster. Use Free Version. Create Deployment.
+
+Copy the password. Create the database connection. Connect to your application as drivers, select it.
+Copy the connection string with password. And done.
+
+Install mongoose to local. Create Config folder. db.js file inside it. 
+Use try catch for connecting MongodB
+        import mongoose from "mongoose"
+        export const connectDB = async () => {
+            try {
+                await mongoose.connect(process.env.MONGO_URL)
+
+                console.log("mongoDB connected successfully")
+            }
+            catch (error) {
+                console.error('Error connecting to mongodB', error)
+                process.exit(1) //Exit with failure
+            }
+        }
+
+Separate the connection string to a dotenv file. For that install dotenv package. Create one dot env file.
+MONGO_URL=mongodb+srv://afiyazannubaa:ay2eITo84oFUumKB@cluster0.jttaghu.mongodb.net/notes_db?retryWrites=true&w=majority&appName=Cluster0
+PORT=5001
+
+Now inside server.js file, add dotenv configs and call the connectDB function.
+        import express from "express";
+        import notesRoutes from "./routes/notesRoutes.js"
+        import { connectDB } from "./config/db.js";
+        import dotenv from "dotenv"
+
+        dotenv.config();
+        // console.log(process.env.MONGO_URL);
+        const app = express();
+        const PORT = process.env.PORT || 5001;
+
+        connectDB();
+        // mongodb+srv://afiyazannubaa:ay2eITo84oFUumKB@cluster0.jttaghu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+        app.use("/api/notes", notesRoutes);
+
+        app.listen(PORT, () => {
+            console.log("Server started on PORT:", PORT)
+        });
+
+/*******************************************************************************************************************************************/
+Create models. Create one folder. Create Note.js file. Let's create a model.
+
+import mongoose and create a schema.
+
+Get started with Controllers:
+
+Middleware:-
+Middle ware is a function that runs in the middle between the request and the response. 
+        app.use((req, res, next) => {
+            console.log("We must get a new req");
+            next();
+        })
+Popular usecase is authentication check. If user is authenticated they can create notes otherwise they can't
+
+Rate Limiting:-
+Rate limiting is a way to control how often someone can do something on a website or app.
+For eg:- how many times they can refresh a page, make a request to an API or try to login etc.
+
+
+
+=====================================================
+frontend
+=====================================================
+npm i react-router
+npm i react-hot-toast
